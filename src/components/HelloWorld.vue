@@ -4,7 +4,7 @@
     <hr/>
 
     <h3>SCORE: {{ PlayerCardScoreValues.length }} </h3>
-    <h2>Is the next card Greater than the card dispalyed?</h2>
+    <h2>Is the next card Greater than the card displayed?</h2>
     {{ playerMessage }}
     <button v-if="playerLostGame || PlayerCardScoreValues.length == toWinScore " type="button" value="Reload Page" onclick="window.location.reload()"> Restart</button>
 
@@ -39,11 +39,11 @@ export default {
       counter: 0,
       playerChoice: true,
       playerLostGame: false,
-      toWinScore: 5,
+      toWinScore: 1,
       currentCardValue: 0,
       cardStack: [],
       nextCardValue: 0,
-      playerMessage: 'Click below to find out!',
+      playerMessage: 'Take a Guess Below!',
       PlayerCardScoreValues: []
     };
   },
