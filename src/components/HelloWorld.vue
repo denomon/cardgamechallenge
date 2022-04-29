@@ -77,7 +77,6 @@ export default {
       }  else {
         this.playerLostGame = true;
         this.playerMessage = 'You have lost the GAME!';
-        this.PlayerCardScoreValues.length = 0;
       }
       this.appendWinnerCards(this.nextCardValue, "stillPlaying");
       this.currentCardValue = this.nextCardValue;
