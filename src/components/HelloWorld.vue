@@ -39,7 +39,7 @@ export default {
       counter: 0,
       playerChoice: true,
       playerLostGame: false,
-      toWinScore: 1,
+      toWinScore: 5,
       currentCardValue: 0,
       cardStack: [],
       nextCardValue: 0,
