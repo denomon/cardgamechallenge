@@ -49,17 +49,11 @@ export default {
   },
   methods: {
     // Creating function
-
     createStack: function () {
       for (var decknumber = 0; decknumber <= 51; decknumber++) {
         var chosenNumber = Math.floor(Math.random() * this.cardValues.length);
         this.cardStack[decknumber] = this.cardValues[chosenNumber];
       }
-    },
-    show: function () {
-      //Create the stack
-      this.createStack();
-      this.currentCardValue = this.cardStack[0];
     },
     yes: function () {
       this.playerChoiceSelected('YES');
@@ -70,7 +64,7 @@ export default {
     playerChoiceSelected: function (playerChoice) {
       this.counter++;
 
-      //check if the next card value is highyer than current
+      //check if the next card value is highyer or lower than current
       this.nextCardValue = this.cardStack[this.counter];
 
       //Check if they have scored or not
@@ -101,8 +95,8 @@ export default {
 
   },
   beforeMount() {
-    this.show()
-  },
+    this.createStack();
+    this.currentCardValue = this.cardStack[0];  },
 }
 </script>
 
