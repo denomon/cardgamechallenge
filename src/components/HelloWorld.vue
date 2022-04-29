@@ -80,12 +80,7 @@ export default {
       ) {
         this.PlayerCardScoreValues.push(this.currentCardValue);
         this.playerMessage = (this.PlayerCardScoreValues.length === this.toWinScore) ? 'You have WON the Game' : 'Good Choice! Have another go.';
-
-      } else if (this.cardValues.indexOf(this.nextCardValue) == this.cardValues.indexOf(this.currentCardValue)) {
-        this.playerLostGame = true;
-        this.playerMessage = 'You have lost the GAME!';
-        this.PlayerCardScoreValues.length = 0;
-      } else {
+      }  else {
         this.playerLostGame = true;
         this.playerMessage = 'You have lost the GAME!';
         this.PlayerCardScoreValues.length = 0;
