@@ -3,36 +3,26 @@
     <h1>{{ msg }}</h1>
     <h2>Is the next card Greater than the card dispalyed?</h2>
     <hr/>
-    <h3>{{ playerMessage }}</h3>
+    <h3>SCORE: {{ PlayerCardScoreValues.length }} </h3>
+    {{ playerMessage }}
     <button v-if="playerLostGame || PlayerCardScoreValues.length == toWinScore " type="button" value="Reload Page" onclick="window.location.reload()"> Restart</button>
 
-
     <!-- Calling function in methods -->
-    <div class="buttons">
-      <button @click="no">No!</button>
-      <button @click="yes">Yes!</button>
-    </div>
-    <div v-if="PlayerCardScoreValues.length < toWinScore">
-      <div class="card center">
-        <span class="card-value-suit top">{{ currentCardValue }}</span>
-        <span class="card-value-suit bot">{{ currentCardValue }}</span>
+    <div  class="select-buttons">
+      <div v-if="!playerLostGame" class="buttons">
+        <button @click="no">No!</button>
+        <button @click="yes">Yes!</button>
       </div>
     </div>
-    <div v-if="PlayerCardScoreValues.length === toWinScore" class="card center">
-      <h4>Your Winning Selection is shown below</h4>
 
-      {{
-        PlayerCardScoreValues.forEach((value, index) => {
-          appendWinnerCards(value);
-        })
-      }}
+    <div id="stillPlaying">
+      <div class="card center">
+        <span class="card-value-suit top">{{ this.cardStack[0] }}</span>
+        <span class="card-value-suit bot">{{ this.cardStack[0] }}</span>
+      </div>
     </div>
-
-    <h3>SCORE: {{ PlayerCardScoreValues.length }}</h3>
-
-    <hr/>
-
   </div>
+
 </template>
 
 <script>
@@ -46,12 +36,13 @@ export default {
     return {
       cardValues: ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"],
       counter: 0,
+      playerChoice: true,
       playerLostGame: false,
-      toWinScore: 1,
+      toWinScore: 5,
       currentCardValue: 0,
       cardStack: [],
       nextCardValue: 0,
-      playerMessage: 'Select below to find out!',
+      playerMessage: 'Click below to find out!',
       PlayerCardScoreValues: []
     };
   },
@@ -70,39 +61,24 @@ export default {
       this.currentCardValue = this.cardStack[0];
     },
     yes: function () {
-      this.counter++;
-      console.log(this.cardStack);
-      //check if the next card value is highyer than current
-      this.nextCardValue = this.cardStack[this.counter];
-
-      //Check if they have scored or not
-      if (this.cardValues.indexOf(this.nextCardValue) > this.cardValues.indexOf(this.currentCardValue)) {
-        this.score++;
-        this.playerMessage = (this.PlayerCardScoreValues.length == this.toWinScore) ? 'You have WON the Game' : 'Good try';
-        this.PlayerCardScoreValues.push(this.currentCardValue);
-
-      } else if (this.cardValues.indexOf(this.nextCardValue) == this.cardValues.indexOf(this.currentCardValue)) {
-        this.playerLostGame = true;
-        this.playerMessage = 'You have lost the GAME!';
-        this.PlayerCardScoreValues.length = 0;
-      } else {
-        this.playerLostGame = true;
-        this.playerMessage = 'You have lost the GAME!';
-        this.PlayerCardScoreValues.length = 0;
-      }
-      this.currentCardValue = this.nextCardValue;
+      this.playerChoiceSelected('YES');
     },
     no: function () {
+      this.playerChoiceSelected('NO');
+    },
+    playerChoiceSelected: function (playerChoice) {
       this.counter++;
 
       //check if the next card value is highyer than current
       this.nextCardValue = this.cardStack[this.counter];
 
       //Check if they have scored or not
-      if (this.cardValues.indexOf(this.nextCardValue) < this.cardValues.indexOf(this.currentCardValue)) {
-        this.score++;
-        this.playerMessage = (this.PlayerCardScoreValues.length == this.toWinScore) ? 'You have WON the Game' : 'Good try';
+      if (
+          (playerChoice == "YES" && this.cardValues.indexOf(this.nextCardValue) > this.cardValues.indexOf(this.currentCardValue)) ||
+          (playerChoice == "NO" && this.cardValues.indexOf(this.nextCardValue) < this.cardValues.indexOf(this.currentCardValue))
+      ) {
         this.PlayerCardScoreValues.push(this.currentCardValue);
+        this.playerMessage = (this.PlayerCardScoreValues.length === this.toWinScore) ? 'You have WON the Game' : 'Good Choice! Have another go.';
 
       } else if (this.cardValues.indexOf(this.nextCardValue) == this.cardValues.indexOf(this.currentCardValue)) {
         this.playerLostGame = true;
@@ -113,22 +89,20 @@ export default {
         this.playerMessage = 'You have lost the GAME!';
         this.PlayerCardScoreValues.length = 0;
       }
+      this.appendWinnerCards(this.nextCardValue, "stillPlaying");
       this.currentCardValue = this.nextCardValue;
-
     },
-    appendWinnerCards: function (scoredCardValue) {
+    appendWinnerCards: function (scoredCardValue, id) {
       const card = document.createElement("div");
       card.classList.add("card");
       card.classList.add("center");
       card.innerHTML =
           '<span class="card-value-suit top">' + scoredCardValue + '</span>' +
+          '<span class="card-value-suit top">' + scoredCardValue + '</span>' +
           '<span class="card-value-suit bot">' + scoredCardValue + '</span>';
-      document.body.appendChild(card);
+      document.getElementById(id).appendChild(card);
     }
 
-  },
-  refreshPage: function () {
-    this.$forceUpdate()
   },
   beforeMount() {
     this.show()
@@ -150,6 +124,11 @@ hr {
 .center {
   margin: 0 auto;
   text-align: center;
+}
+
+.select-buttons {
+  margin: 40px;
+
 }
 
 .buttons {
