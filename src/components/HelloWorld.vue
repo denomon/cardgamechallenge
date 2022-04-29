@@ -1,9 +1,10 @@
 <template>
   <div class="hello" id="home">
     <h1>{{ msg }}</h1>
-    <h2>Is the next card Greater than the card dispalyed?</h2>
     <hr/>
+
     <h3>SCORE: {{ PlayerCardScoreValues.length }} </h3>
+    <h2>Is the next card Greater than the card dispalyed?</h2>
     {{ playerMessage }}
     <button v-if="playerLostGame || PlayerCardScoreValues.length == toWinScore " type="button" value="Reload Page" onclick="window.location.reload()"> Restart</button>
 
